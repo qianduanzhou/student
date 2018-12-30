@@ -1,0 +1,92 @@
+{{extend './_layouts/home.html'}}
+
+{{block 'title'}}{{'交换生 - 首页'}}{{/block}}
+{{block 'head'}}
+<link href="/public/css/main.css" rel="stylesheet">
+<style>
+.col-md-offset-2 {
+    margin-left: 16.66666667%;
+    top: -180px
+}
+.rec{
+  background: red
+}
+</style>
+{{/block}}
+{{block 'body'}}
+<section class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="/">管理员<span class="sr-only">(current)</span></a></li>
+          <li><a href="/">院校</a></li>
+          <li  class="active"><a href="/student?id={{ stid}}">交换生</a></li>
+          <li><a href="/">第三方评估</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <h2 class="sub-header">院校</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>校名</th>
+                <th>地址</th>
+                <th>级别</th>
+                <th>是否推荐</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {{ each schools }}
+              <tr>
+                  <td>{{ $index+1 }}</td>
+                  <td>{{ $value.nickname }}</td>
+                  <td>{{ $value.address}}</td>
+                  <td>{{ $value.lever }}</td>
+                  <td>{{ $value.isrec }}</td>
+                  <td>
+                    <a href="/application?scid={{ $value._id }}&stid={{ stid }}">申请</a>
+                  </td>
+                </tr>
+              {{ /each}}     
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav aria-label="Page navigation" >
+    <ul class="pagination"  style="margin-left: 200px">
+      <li>
+        <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+      </li>
+      <li class="active"><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li>
+        <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+      </li>
+    </ul>
+  </nav>
+</section>
+{{block 'script'}}
+<script>
+// var btns = document.getElementsByClassName('btn')
+// for(var i = 0; i<btns.length ;i++) {
+//   btns[i].onclick = function(){
+    
+//   }
+// }
+</script>
+{{/block}}
+{{/block}}

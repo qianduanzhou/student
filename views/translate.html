@@ -1,0 +1,36 @@
+{{extend './_layouts/home.html'}}
+
+{{block 'title'}}{{'交换生 - 首页'}}{{/block}}
+{{block 'head'}}
+<link href="/public/css/main.css" rel="stylesheet">
+<style>
+.col-md-offset-2 {
+    margin-left: 16.66666667%;
+    top: -180px
+}
+</style>
+{{/block}}
+{{block 'body'}}
+<section class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="/">管理员<span class="sr-only">(current)</span></a></li>
+          <li><a href="/">院校</a></li>
+          <li><a href="/">交换生</a></li>
+          <li><a href="/">第三方评估</a></li>
+          <li class="active"><a href="/translate">翻译机构</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <h2 class="sub-header">翻译机构</h2>
+        <a class="btn btn-success" href="https://fanyi.baidu.com/">点击翻译</a>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+{{/block}}
