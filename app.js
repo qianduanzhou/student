@@ -50,5 +50,5 @@ app.use(function(err,req,res,next) {
   })
 })
 app.listen(5000,function(){
-    console.log('running...')
+    console.log('running on localhost:5000')
 })

@@ -6,7 +6,7 @@
 <style>
 .col-md-offset-2 {
     margin-left: 16.66666667%;
-    top: -180px
+    top: -220px
 }
 </style>
 {{/block}}
@@ -27,6 +27,11 @@
 
         <h2 class="sub-header">管理员</h2>
         <a class="btn btn-success" href="/new1">添加账号</a>
+        <br/><br/>
+        <form id="search">
+          <input type="number" name="type" placeholder="搜索类型" style="height:32px">
+          <button type="submit" class="btn btn-success">搜索</button>
+        </form>
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
@@ -79,4 +84,27 @@
     </ul>
   </nav>
 </section>
+{{block 'script'}}
+<script>
+$('#search').on('submit',function(e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+      $.ajax({
+        url: '/admin',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          var type  = data.type
+          if (err_code === 0) {
+            window.location.href = '/search?type='+type
+          } else if (err_code === 1) {
+            window.alert('找不到指定类型')
+          }
+        }
+      })
+})
+</script>
+{{/block}}
 {{/block}}

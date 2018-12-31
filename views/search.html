@@ -1,4 +1,4 @@
-{{extend '../_layouts/home.html'}}
+{{extend './_layouts/home.html'}}
 
 {{block 'title'}}{{'交换生 - 首页'}}{{/block}}
 {{block 'head'}}
@@ -16,45 +16,39 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <li><a href="/">管理员<span class="sr-only">(current)</span></a></li>
+          <li class="active"><a href="/admin">管理员<span class="sr-only">(current)</span></a></li>
           <li><a href="/">院校</a></li>
           <li><a href="/">交换生</a></li>
-          <li  class="active"><a href="/judge">第三方评估</a></li>
+          <li><a href="/">第三方评估</a></li>
           <li><a href="/">翻译机构</a></li>
         </ul>
       </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-        <h2 class="sub-header">第三方评估</h2>
+        <h2 class="sub-header">搜索结果</h2>
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th>#</th>
-                <th>校名</th>
-                <th>地址</th>
-                <th>级别</th>
-                <th>是否推荐</th>
-                <th>评估信息</th>
+                <th>账号</th>
+                <th>密码</th>
+                <th>名称</th>
+                <th>类型</th>
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
-              {{ each schools }}
+              {{ each datas }}
               <tr>
                   <td>{{ $index+1 }}</td>
+                  <td>{{ $value.username }}</td>
+                  <td>{{ $value.password }}</td>
                   <td>{{ $value.nickname }}</td>
-                  <td>{{ $value.address }}</td>
-                  <td>{{ $value.lever }}</td>
-                  <td>{{ $value.isrec }}</td>
-                  <td>{{ $value.judge }}</td>
+                  <td>{{ $value.type }}</td>
                   <td>
-                        {{if $value.isrec==='是'}}
-                        <a href="/unrecomment1-school?id={{ $value._id }}">取消推荐</a>
-                        {{else}}
-                        <a href="/recomment1-school?id={{ $value._id }}">设为推荐</a>
-                        {{/if}}
-                    <a href="/edit1-judge?id={{ $value._id }}">修改评估信息</a>
+                    <a href="/edit1?id={{ $value._id }}">编辑</a>
+                    <a href="/delete1?id={{ $value._id }}">删除</a>
                   </td>
                 </tr>
               {{ /each}}     

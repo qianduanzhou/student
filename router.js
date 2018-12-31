@@ -127,19 +127,25 @@ router.get('/',function(req,res){
 })
 router.get('/admin',function(req,res,next) {
     req.session.user
+    
     User.find(function(err,users){
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('index.html',{
             users: users,
             user:req.session.user
         })
+    }
     })
 })
 
 router.get('/new1',function(req,res) {
+    req.session.user
+    if(req.session.user){
     res.render('./new/new1.html')
+}
 })
 
 router.post('/new1',function(req,res,next) {
@@ -152,13 +158,16 @@ router.post('/new1',function(req,res,next) {
 })
 
 router.get('/edit1',function(req,res,next) {
+    req.session.user
     User.findById(req.query.id.replace(/"/g,""),function(err,user) {
         if(err) {
             return next(err)
         }
+        if(req.session.user){
         res.render('./edit/edit1.html',{
             user:user
         })
+    }
     })
 })
 
@@ -182,6 +191,46 @@ router.get('/delete1',function(req,res) {
     })
 })
 
+//  管理员搜索
+router.get('/search',function(req,res,next) {
+    req.session.user
+    User.find({type:req.query.type},function(err,data){
+        if(err) {
+            return next(err)
+        }
+        if(req.session.user){
+        res.render('search.html',{
+            datas:data,
+            user:req.session.user
+        })
+    }
+    })
+})
+
+router.post('/admin',function(req,res,next) {
+    User.findOne({
+            type:req.body.type
+        },function(err,data){
+        if(err) {
+            return next(err)
+        }
+        if(!data) {
+            return res.status(200).json({
+                err_code:1,
+                message:'找不到指定类型'
+            })
+        }
+        res.status(200).json({
+            err_code:0,
+            type:data.type,
+            message:'搜索成功'
+        })
+    })
+})
+
+
+
+
 //  院校
 
 router.get('/school',function(req,res,next) {
@@ -190,15 +239,20 @@ router.get('/school',function(req,res,next) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user) {
         res.render('school.html',{
             schools: schools,
             user:req.session.user
         })
+    }
     })
 })
 
 router.get('/new-school',function(req,res) {
+    req.session.user
+    if(req.session.user){
     res.render('./new/new-school.html')
+    }
 })
 
 router.post('/new-school',function(req,res,next) {
@@ -211,13 +265,16 @@ router.post('/new-school',function(req,res,next) {
 })
 
 router.get('/edit-school',function(req,res,next) {
+    req.session.user
     School.findById(req.query.id.replace(/"/g,""),function(err,school) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('./edit/edit-school.html',{
             school:school
         })
+    }
     })
 })
 
@@ -233,12 +290,15 @@ router.post('/edit-school',function(req,res,next) {
 })
 
 router.get('/delete-school',function(req,res) {
+    req.session.user
     var id = req.query.id.replace(/"/g,'')
     School.findByIdAndRemove(id,req.query,function(err){
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.redirect('/school')
+        }
     })
 })
 
@@ -301,11 +361,14 @@ router.get('/see-appli',function(req,res,next) {
 router.get('/unapp',function(req,res,next) {
     var id = req.query.id.replace(/"/g,"")
     var id1 = req.query.id1.replace(/"/g,"")
+    req.session.user
     User.findByIdAndUpdate(id,{$set: { application: '否'}},function(err) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.redirect('/see-appli?id='+id1)
+    }
     })
 })
 
@@ -318,23 +381,28 @@ router.get('/student',function(req,res,next) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('student.html',{
             student:student,
             user:req.session.user
         })
+    }
     })
     
 })
 
 router.get('/edit-student',function(req,res,next) {
+    req.session.user
     User.findById(req.query.id.replace(/"/g,""),
     function(err,student){
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('./edit/edit-student.html',{
             student:student
         })
+    }
     })
     
 })
@@ -360,17 +428,20 @@ router.get('/app-student',function(req,res,next) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user) {
         res.render('app-school.html',{
             schools:schools,
             user:req.session.user,
             stid:stid
         })
+    }
     })
 })
 
 router.get('/application',function(req,res,next) {
     var scid = req.query.scid.replace(/"/g,"")
     var stid = req.query.stid.replace(/"/g,"")
+    req.session.user
     School.findById(scid,function(err,school) {
         if(err) {
             return next(err)
@@ -379,7 +450,9 @@ router.get('/application',function(req,res,next) {
             if(err) {
                 return next(err)
             }
+            else if(req.session.user){
             res.redirect('student?id='+stid)
+            }
         })
     })
     // console.log(appli)
@@ -391,34 +464,43 @@ router.get('/application',function(req,res,next) {
 
 //  第三方评估
 router.get('/judge',function(req,res,next) {
+    req.session.user
+    if(req.session.user){
     res.render('judge.html',{
         user:req.session.user
     })
+}
 })
 
 //  评估学生
 
 router.get('/judge-student',function(req,res,next) {
+    req.session.user
     User.find({type:2},function(err,students) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('./judge/judge-student.html',{
             students:students,
             user:req.session.user
         })
+    }
     })
 })
 
 router.get('/edit-judge',function(req,res,next) {
     var id = req.query.id.replace(/"/g,"")
+    req.session.user
     User.findById(id,function(err,user) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user){
         res.render('./edit/edit-judge.html',{
             user:user
         })
+    }
     })
     
 })
@@ -439,26 +521,32 @@ Recomment('/unrecomment-student',User,'/judge-student','否')
 //  评估学校
 
 router.get('/judge-school',function(req,res,next) {
+    req.session.user
     School.find(function(err,schools) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user) {
         res.render('./judge/judge-school.html',{
             schools:schools,
             user:req.session.user
         })
+    }
     })
 })
 
 router.get('/edit1-judge',function(req,res,next) {
     var id = req.query.id.replace(/"/g,"")
+    req.session.user
     School.findById(id,function(err,user) {
         if(err) {
             return next(err)
         }
+        else if(req.session.user) {
         res.render('./edit/edit1-judge.html',{
             user:user
         })
+    }
     })
     
  })
@@ -479,9 +567,12 @@ Recomment('/unrecomment1-school',School,'/judge-school','否')
 
 //  翻译机构
 router.get('/translate',function(req,res,next){
+    req.session.user
+    if(req.session.user) {
     res.render('translate.html',{
         user:req.session.user
     })
+}
 })
 
 module.exports = router
