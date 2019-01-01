@@ -26,11 +26,46 @@
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
         <h2 class="sub-header">翻译机构</h2>
-        <a class="btn btn-success" href="https://fanyi.baidu.com/">点击翻译</a>
+        <a class="btn btn-success" href="/new-lan">添加语种</a>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>语种名称</th>
+                <th>课程时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {{ each languages }}
+              <tr>
+                  <td>{{ $index+1 }}</td>
+                  <td>{{ $value.name }}</td>
+                  <td>{{ $value.time}}</td>
+                  <td>
+                    <a href="/https://fanyi.baidu.com/?aldtype=16047#auto/zh">翻译</a>
+                    <a href="" class="peixun">申请培训</a>
+                  </td>
+                </tr>
+              {{ /each}}     
+            </tbody>
+          </table>
+        </div>
           </div>
       </div>
     </div>
   </div>
-  
+  {{block 'script'}}
+  <script>
+
+  var pei = document.querySelectorAll('.peixun')
+  for(var i = 0; i < pei.length; i++) {
+    pei[i].onclick=function() {
+      window.alert('申请培训成功')
+    }
+  }
+  </script>
+  {{/block}}
 </section>
 {{/block}}

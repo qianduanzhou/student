@@ -2,7 +2,7 @@ var express = require('express')
 var User = require('./models/user.js')
 var router = express.Router()
 var School = require('./models/school.js')
-
+var Language = require('./models/language.js')
 //  申请管理员
 // new User({
 //     username:'admin',
@@ -568,11 +568,29 @@ Recomment('/unrecomment1-school',School,'/judge-school','否')
 //  翻译机构
 router.get('/translate',function(req,res,next){
     req.session.user
-    if(req.session.user) {
-    res.render('translate.html',{
-        user:req.session.user
+    Language.find(function(err,languages) {
+        if(err) {
+            return next(err)
+        }
+        res.render('translate.html',{
+            user:req.session.user,
+            languages:languages
+        })
     })
-}
+})
+
+//  添加语种
+router.get('/new-lan',function(req,res,next) {
+    res.render('./new/new-lan.html')
+})
+
+router.post('/new-lan',function(req,res,next) {
+    new Language(req.body).save(function(err) {
+        if(err) {
+            return next(err)
+        }
+        res.redirect('/translate')
+    })
 })
 
 module.exports = router
