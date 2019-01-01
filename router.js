@@ -409,7 +409,6 @@ router.get('/edit-student',function(req,res,next) {
 
 router.post('/edit-student',function(req,res,next) {
     var id = req.body.id.replace(/"/g,"")
-    console.log(id)
     User.findByIdAndUpdate(id,req.body,
     function(err){
         if(err) {
@@ -572,10 +571,12 @@ router.get('/translate',function(req,res,next){
         if(err) {
             return next(err)
         }
+        if(req.session.user){
         res.render('translate.html',{
             user:req.session.user,
             languages:languages
         })
+    }
     })
 })
 
